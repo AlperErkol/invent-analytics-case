@@ -10,6 +10,7 @@ import HomePage from "./pages/home-page";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "./layout";
 import ContentPage from "./pages/content-page";
+import ContentDetailPage from "./pages/content-detail-page";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "content",
     element: <ContentPage />,
+  },
+  {
+    path: "content/:imdbID",
+    element: <ContentDetailPage />,
   },
   {
     path: "movie/:movieId",

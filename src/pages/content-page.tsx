@@ -2,27 +2,53 @@ import { useMutation } from "@tanstack/react-query";
 import { getContent } from "../service/omdb";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { ContentSearchParams, ContentType } from "../types/content";
+import Input from "../components/ui/input";
+import Button from "../components/ui/button";
+import { Search } from "lucide-react";
+import Select from "../components/ui/select";
+import { searchTypeOptions } from "../util/content";
 import "../styles/content-page.scss";
+import Pagination from "../components/ui/pagination";
+import DataTable from "../components/ui/data-table";
+import { useNavigate } from "react-router-dom";
 
 const ContentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState<string>("Pokemon");
+  const [contentSearchParams, setContentSearchParams] =
+    useState<ContentSearchParams>({
+      title: "Pokemon",
+      type: ContentType.Movie,
+      releaseYear: "",
+    });
+  const navigate = useNavigate();
+  const { title, type, releaseYear } = contentSearchParams;
   const currentPage = parseInt(searchParams.get("page") || "1");
 
-  const { data, mutate } = useMutation({
-    mutationKey: [title, currentPage],
-    mutationFn: async ({ title, page }: { title: string; page: number }) => {
-      return await getContent(title, page);
+  const { data, mutate, isPending } = useMutation({
+    mutationKey: [contentSearchParams, currentPage],
+    mutationFn: async ({
+      contentSearchParams,
+      page,
+    }: {
+      contentSearchParams: ContentSearchParams;
+      page: number;
+    }) => {
+      return await getContent(contentSearchParams, page);
     },
   });
 
   useEffect(() => {
-    mutate({ title, page: currentPage });
+    mutate({ contentSearchParams, page: currentPage });
   }, [currentPage]);
 
   const onSearchHandle = () => {
     setSearchParams({ page: "1" });
-    mutate({ title, page: 1 });
+    mutate({ contentSearchParams, page: 1 });
+  };
+
+  const onRowClickHandle = (id: string) => {
+    navigate(`/content/${id}`);
   };
 
   const calculateNextPage = (isPrev: boolean) => {
@@ -33,53 +59,70 @@ const ContentPage = () => {
     setSearchParams({ page: (currentPage + 1).toString() });
   };
 
+  const columns: string[] = ["Name", "Release Date", "Type", "IMDb ID"];
+
   return (
     <div className="content-page">
-      <div className="content-page-header pt-6 pb-4">
-        <input
-          type="text"
-          placeholder="Search movie, tv series or tv episodes"
+      <div className="content-page-header flex gap-4 pt-6 pb-4">
+        <Input
+          id="search-title"
+          label="Title"
+          placeholder="Title"
           value={title}
-          onChange={(event: any) => setTitle(event.target.value)}
+          onChange={(event: any) =>
+            setContentSearchParams({
+              ...contentSearchParams,
+              title: event.target.value,
+            })
+          }
         />
-        <select name="type" id="type">
-          <option value="all">All</option>
-          <option value="movie">Movies</option>
-          <option value="series">TV Series</option>
-          <option value="episode">Episodes</option>
-        </select>
-        <button onClick={() => onSearchHandle()}>Search</button>
+        <Input
+          id="search-release-year"
+          label="Release Year"
+          placeholder="1999"
+          value={releaseYear}
+          onChange={(event: any) =>
+            setContentSearchParams({
+              ...contentSearchParams,
+              releaseYear: event.target.value,
+            })
+          }
+        />
+        <div className="flex flex-col">
+          <Select
+            label="Type"
+            options={searchTypeOptions}
+            value={type}
+            onChange={(event: any) =>
+              setContentSearchParams({
+                ...contentSearchParams,
+                type: event.target.value,
+              })
+            }
+          />
+        </div>
+
+        <div className="flex flex-col justify-end">
+          <Button
+            disabled={title === ""}
+            icon={<Search size={18} />}
+            label="Search"
+            onClick={() => onSearchHandle()}
+          />
+        </div>
       </div>
       <div className="content-page-body">
-        <table className="content-page-body-table">
-          <tr>
-            <th>Name</th>
-            <th>Release Data</th>
-            <th>IMDb ID</th>
-          </tr>
-          {data &&
-            data.Search &&
-            data.Search.length > 0 &&
-            data.Search.map((content: any, index: number) => (
-              <tr key={index}>
-                <td>{content.Title}</td>
-                <td>{content.Year}</td>
-                <td>{content.imdbID}</td>
-              </tr>
-            ))}
-        </table>
-        <div className="content-page-body-footer">
-          {data && <small>{data.totalResults} contents are retrieved.</small>}
-          <div>
-            <button
-              disabled={currentPage === 1}
-              onClick={() => calculateNextPage(true)}
-            >
-              Prev
-            </button>
-            <button onClick={() => calculateNextPage(false)}>Next</button>
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={data}
+          isPending={isPending}
+          onRowClick={onRowClickHandle}
+        />
+        <Pagination
+          currentPage={currentPage}
+          rowCount={data?.totalResults}
+          onClick={calculateNextPage}
+        />
       </div>
     </div>
   );

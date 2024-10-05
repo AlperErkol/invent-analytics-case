@@ -20,11 +20,6 @@ body {
   height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -38,6 +33,7 @@ th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
+tr:hover {
   background-color: #dddddd;
+  cursor: pointer;
 }
