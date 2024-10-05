@@ -5,6 +5,7 @@ import { Dot } from "lucide-react";
 import Badge from "../components/ui/badge";
 import Rating from "../components/rating";
 import ContentDetailMeta from "../components/content-detail-meta";
+import PageTitle from "../components/page-title";
 
 const ContentDetialPage = () => {
   const id = useIMDbId();
@@ -42,7 +43,7 @@ const ContentDetialPage = () => {
 
   return (
     <div className="content-detail-page">
-      <div className="content-detail-page-poster w-full py-4 flex gap-4 mb-2 h-96 overflow-hidden">
+      <div className="content-detail-page-poster w-full py-2 flex gap-4 h-96 overflow-hidden">
         <img
           className="object-fill rounded-md"
           src={poster}
@@ -50,9 +51,7 @@ const ContentDetialPage = () => {
         />
         <div className="content-detail-page-header w-full border rounded-md p-4">
           <div className="flex flex-col mb-6">
-            <h1 className="mb-1 text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">
-              {title}
-            </h1>
+            <PageTitle title={title} />
             <div className="flex gap-2 text-sm font-semibold">
               <span>{duration}</span>
               <Dot size={20} />
@@ -69,7 +68,7 @@ const ContentDetialPage = () => {
         </div>
       </div>
       <div className="content-detail-page-details w-full">
-        <div className="flex gap-2 my-4">
+        <div className="flex gap-2 py-2">
           {genreList.map((genre: string, index: number) => (
             <Badge key={index} label={genre} />
           ))}
