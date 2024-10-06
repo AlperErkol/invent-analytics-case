@@ -60,9 +60,6 @@ const ContentPage = () => {
   };
 
   const columns: string[] = ["Name", "Release Date", "Type", "IMDb ID"];
-
-  console.log(data);
-
   return (
     <div className="content-page">
       <div className="content-page-header flex gap-4 pt-6 pb-4">
@@ -120,7 +117,7 @@ const ContentPage = () => {
           isPending={isPending}
           onRowClick={onRowClickHandle}
         />
-        {(isPending || isError || isSuccess) && (
+        {(isPending || isError) && (
           <DataStatusBoundry
             isPending={isPending}
             isError={isError}
