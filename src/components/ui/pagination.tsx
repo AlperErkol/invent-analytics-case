@@ -6,12 +6,19 @@ interface IProps {
   rowCount: number | undefined;
 }
 
+const PAGE_ROW_LIMIT = 10;
+
 const Pagination: React.FC<IProps> = ({ rowCount }) => {
   const [currentPage, setSearchParams] = usePage();
 
   const calculateNextPage = (isPrev: boolean) => {
     const nextPage = isPrev ? currentPage - 1 : currentPage + 1;
     setSearchParams({ page: nextPage.toString() });
+  };
+
+  const hasNextPage = () => {
+    const totalShownCount = PAGE_ROW_LIMIT * currentPage;
+    return !(rowCount && totalShownCount > rowCount);
   };
 
   return (
@@ -23,7 +30,11 @@ const Pagination: React.FC<IProps> = ({ rowCount }) => {
           disabled={currentPage === 1}
           onClick={() => calculateNextPage(true)}
         />
-        <Button label="Next" onClick={() => calculateNextPage(false)} />
+        <Button
+          label="Next"
+          onClick={() => calculateNextPage(false)}
+          disabled={!hasNextPage()}
+        />
       </div>
     </div>
   );

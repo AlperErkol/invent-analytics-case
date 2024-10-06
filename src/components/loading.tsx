@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className="data-status-boundry">
       <div className="spinner">
-        <LoaderCircle size={30} />
+        <LoaderCircle data-testid="loading-icon" size={30} />
       </div>
     </div>
   );

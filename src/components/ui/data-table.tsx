@@ -18,20 +18,22 @@ const DataTable: React.FC<IProps> = ({ columns, data }) => {
   return (
     <div className="content-page-body-wrapper">
       <table className="content-page-body-wrapper-table">
-        <tr>
-          {columns.map((columnName: string, index: number) => (
-            <th key={index}>{columnName}</th>
-          ))}
-        </tr>
-        {contents &&
-          contents.map((content: any, index: number) => (
-            <tr onClick={() => onRowClick(content.imdbID)} key={index}>
-              <td>{content.Title}</td>
-              <td>{content.Year}</td>
-              <td>{content.Type}</td>
-              <td>{content.imdbID}</td>
-            </tr>
-          ))}
+        <tbody>
+          <tr>
+            {columns.map((columnName: string, index: number) => (
+              <th key={index}>{columnName}</th>
+            ))}
+          </tr>
+          {contents &&
+            contents.map((content: any, index: number) => (
+              <tr onClick={() => onRowClick(content.imdbID)} key={index}>
+                <td>{content.Title}</td>
+                <td>{content.Year}</td>
+                <td>{content.Type}</td>
+                <td>{content.imdbID}</td>
+              </tr>
+            ))}
+        </tbody>
       </table>
       {contents && <Pagination rowCount={data?.totalResults} />}
     </div>

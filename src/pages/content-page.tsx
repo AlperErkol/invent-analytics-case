@@ -1,16 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { getContent } from "../service/omdb";
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import { getContent } from "../api/omdb";
+import { usePage } from "../hooks/use-page";
 import { ContentSearchParams, ContentType } from "../types/content";
+import { searchTypeOptions, tableColumnFields } from "../util/content";
+import DataStatusBoundry from "../components/data-status-boundry";
 import Input from "../components/ui/input";
 import Button from "../components/ui/button";
-import { Search } from "lucide-react";
 import Select from "../components/ui/select";
-import { searchTypeOptions, tableColumnFields } from "../util/content";
-import "../styles/content-page.scss";
 import DataTable from "../components/ui/data-table";
-import DataStatusBoundry from "../components/data-status-boundry";
-import { usePage } from "../hooks/use-page";
+import "../styles/content-page.scss";
 
 const ContentPage = () => {
   const [currentPage, setSearchParams] = usePage();
@@ -21,7 +21,7 @@ const ContentPage = () => {
       releaseYear: "",
     });
 
-  const { data, mutate, isPending, isError, isSuccess } = useMutation({
+  const { data, mutate, isPending, isError, error } = useMutation({
     mutationFn: ({
       contentSearchParams,
       page,
@@ -38,7 +38,8 @@ const ContentPage = () => {
   }, [currentPage]);
 
   const { title, type, releaseYear } = contentSearchParams;
-  const onSearchHandle = () => {
+  const onSearchHandle = (event: any) => {
+    event.preventDefault();
     setSearchParams({ page: "1" });
     mutate({ contentSearchParams, page: 1 });
   };
@@ -54,8 +55,12 @@ const ContentPage = () => {
 
   return (
     <div className="content-page">
-      <header className="content-page-header flex gap-4 pt-6 pb-4">
+      <form
+        onSubmit={(event: any) => onSearchHandle(event)}
+        className="flex gap-4 pt-6 pb-4"
+      >
         <Input
+          data-testid="search-title"
           id="search-title"
           label="Title"
           placeholder="Title"
@@ -63,6 +68,7 @@ const ContentPage = () => {
           onChange={handleInputChange("title")}
         />
         <Input
+          data-testid="search-release-year"
           id="search-release-year"
           label="Release Year"
           placeholder="1999"
@@ -70,6 +76,7 @@ const ContentPage = () => {
           onChange={handleInputChange("releaseYear")}
         />
         <Select
+          data-testid="search-type"
           label="Type"
           options={searchTypeOptions}
           value={type}
@@ -77,19 +84,21 @@ const ContentPage = () => {
         />
         <div className="flex flex-col justify-end">
           <Button
+            data-testid="search-submit-button"
+            type="submit"
             disabled={title === ""}
             icon={<Search size={18} />}
             label="Search"
-            onClick={() => onSearchHandle()}
           />
         </div>
-      </header>
+      </form>
       <section className="content-page-body">
         <DataTable columns={tableColumnFields} data={data} />
         <DataStatusBoundry
           isPending={isPending}
           isError={isError}
           data={data}
+          error={error}
         />
       </section>
     </div>

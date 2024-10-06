@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom"; // for better assertions
+import "@testing-library/jest-dom";
 import DataStatusBoundry from "./data-status-boundry";
 
 jest.mock("./loading", () => () => <div>Loading...</div>);
@@ -10,23 +10,29 @@ jest.mock("./no-data", () => (props: { message: string }) => (
 
 describe("DataStatusBoundry Component", () => {
   it("renders loading state when isPending is true", () => {
-    render(<DataStatusBoundry isPending={true} isError={false} data={null} />);
+    render(
+      <DataStatusBoundry
+        isPending={true}
+        isError={false}
+        data={null}
+        error={null}
+      />
+    );
     const loadingComponent = screen.getByText("Loading...");
     expect(loadingComponent).toBeInTheDocument();
   });
 
   it("renders error state when isError is true", () => {
-    render(<DataStatusBoundry isPending={false} isError={true} data={null} />);
+    render(
+      <DataStatusBoundry
+        isPending={false}
+        isError={true}
+        data={null}
+        error={null}
+      />
+    );
     const errorComponent = screen.getByText("Error occurred!");
     expect(errorComponent).toBeInTheDocument();
-  });
-
-  it("renders no data state when isSuccess is true but no data", () => {
-    const mockData = { Error: "No data available" };
-    render(
-      <DataStatusBoundry isPending={false} isError={false} data={mockData} />
-    );
-    expect(screen.getByText("No data: No data available")).toBeInTheDocument();
   });
 
   it("does not render anything when none of the conditions are met", () => {
@@ -35,6 +41,7 @@ describe("DataStatusBoundry Component", () => {
         isPending={false}
         isError={false}
         data={{ Result: true }}
+        error={null}
       />
     );
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();

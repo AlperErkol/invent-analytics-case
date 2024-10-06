@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getContentById } from "../service/omdb";
+import { getContentById } from "../api/omdb";
 import { useIMDbId } from "../hooks/use-imdb-id";
 import { Dot } from "lucide-react";
 import Badge from "../components/ui/badge";
@@ -26,9 +26,7 @@ const ContentDetialPage = () => {
     return <DataError />;
   }
 
-  console.log(data);
-
-  if (data.Response === "False") {
+  if (data?.Response === "False") {
     return (
       <div className="flex items-center justify-center py-8">
         <NoData message={data.Error} />
@@ -37,43 +35,43 @@ const ContentDetialPage = () => {
   }
 
   const {
-    Title: title,
-    Ratings: ratings,
+    Title,
+    Ratings,
     Runtime: duration,
-    Genre: genre,
-    Director: director,
-    Year: year,
+    Genre,
+    Director,
+    Year,
     Plot,
-    Actors: actors,
-    Language: language,
-    Writer: writer,
-    Country: country,
-    Poster: poster,
+    Actors,
+    Language,
+    Writer,
+    Country,
+    Poster,
   } = data;
 
-  const genreList = genre.split(",");
+  const genreList = Genre.split(",");
 
   return (
     <div className="content-detail-page">
       <div className="content-detail-page-poster w-full py-2 flex gap-4 h-96 overflow-hidden">
         <img
           className="object-fill rounded-md"
-          src={poster}
-          alt={title + " .Displaying on Invest analytics case poster."}
+          src={Poster}
+          alt={Title + " .Displaying on Invest analytics case poster."}
         />
         <div className="content-detail-page-header w-full border rounded-md p-4">
           <div className="flex flex-col mb-6">
-            <PageTitle title={title} />
+            <PageTitle title={Title} />
             <div className="flex gap-2 text-sm font-semibold">
               <span>{duration}</span>
               <Dot size={20} />
-              <span>{year}</span>
+              <span>{Year}</span>
               <Dot size={20} />
-              <span>{country}</span>
+              <span>{Country}</span>
             </div>
           </div>
           <div className="flex gap-4">
-            {ratings.map((rating: any) => (
+            {Ratings.map((rating: any) => (
               <Rating rating={rating} />
             ))}
           </div>
@@ -89,10 +87,10 @@ const ContentDetialPage = () => {
           <p>{Plot}</p>
         </div>
         <div>
-          <ContentDetailMeta title="Director(s)" description={director} />
-          <ContentDetailMeta title="Writer(s)" description={writer} />
-          <ContentDetailMeta title="Actor(s)" description={actors} />
-          <ContentDetailMeta title="Language(s)" description={language} />
+          <ContentDetailMeta title="Director(s)" description={Director} />
+          <ContentDetailMeta title="Writer(s)" description={Writer} />
+          <ContentDetailMeta title="Actor(s)" description={Actors} />
+          <ContentDetailMeta title="Language(s)" description={Language} />
         </div>
       </div>
     </div>

@@ -1,7 +1,11 @@
-const DataError = () => {
+interface IProps {
+  message?: string;
+}
+
+const DataError: React.FC<IProps> = ({ message }) => {
   return (
     <div className="data-status-boundry">
-      <p></p>
+      <p>{message || "An error occured!"}</p>
     </div>
   );
 };

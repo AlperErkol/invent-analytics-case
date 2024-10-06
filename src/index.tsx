@@ -4,7 +4,6 @@ import "./index.scss";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/error-page";
-import Movie from "./pages/movie";
 import HomePage from "./pages/home-page";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -25,10 +24,6 @@ const router = createBrowserRouter([
   {
     path: "content/:imdbID",
     element: <ContentDetailPage />,
-  },
-  {
-    path: "movie/:movieId",
-    element: <Movie />,
   },
 ]);
 

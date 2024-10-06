@@ -7,15 +7,21 @@ interface IProps {
   isPending: boolean;
   isError: boolean;
   data: any;
+  error: any;
 }
 
-const DataStatusBoundry: React.FC<IProps> = ({ isPending, isError, data }) => {
+const DataStatusBoundry: React.FC<IProps> = ({
+  isPending,
+  isError,
+  data,
+  error,
+}) => {
   if (isPending) {
     return <Loading />;
   }
 
   if (isError) {
-    return <DataError />;
+    return <DataError message={error?.message} />;
   }
 
   if (data?.Response === "False") {
