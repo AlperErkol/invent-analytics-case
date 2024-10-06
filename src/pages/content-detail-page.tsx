@@ -23,7 +23,6 @@ const ContentDetialPage = () => {
     return <p>Error!</p>;
   }
 
-  console.log(data);
   const {
     Title: title,
     Ratings: ratings,

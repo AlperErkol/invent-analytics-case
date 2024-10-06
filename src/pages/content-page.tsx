@@ -12,6 +12,7 @@ import "../styles/content-page.scss";
 import Pagination from "../components/ui/pagination";
 import DataTable from "../components/ui/data-table";
 import { useNavigate } from "react-router-dom";
+import DataStatusBoundry from "../components/data-status-boundry";
 
 const ContentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,16 +26,15 @@ const ContentPage = () => {
   const { title, type, releaseYear } = contentSearchParams;
   const currentPage = parseInt(searchParams.get("page") || "1");
 
-  const { data, mutate, isPending } = useMutation({
-    mutationKey: [contentSearchParams, currentPage],
-    mutationFn: async ({
+  const { data, mutate, isPending, isError, isSuccess } = useMutation({
+    mutationFn: ({
       contentSearchParams,
       page,
     }: {
       contentSearchParams: ContentSearchParams;
       page: number;
     }) => {
-      return await getContent(contentSearchParams, page);
+      return getContent(contentSearchParams, page);
     },
   });
 
@@ -60,6 +60,8 @@ const ContentPage = () => {
   };
 
   const columns: string[] = ["Name", "Release Date", "Type", "IMDb ID"];
+
+  console.log(data);
 
   return (
     <div className="content-page">
@@ -118,6 +120,14 @@ const ContentPage = () => {
           isPending={isPending}
           onRowClick={onRowClickHandle}
         />
+        {(isPending || isError || isSuccess) && (
+          <DataStatusBoundry
+            isPending={isPending}
+            isError={isError}
+            isSuccess={isSuccess}
+            data={data}
+          />
+        )}
         <Pagination
           currentPage={currentPage}
           rowCount={data?.totalResults}

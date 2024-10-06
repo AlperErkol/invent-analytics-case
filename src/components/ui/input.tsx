@@ -24,6 +24,7 @@ const Input: React.FC<InputProps> = ({
       <input
         className="w-48 h-10 border px-2 rounded-md"
         type={type}
+        autoComplete="off"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
