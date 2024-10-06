@@ -71,8 +71,8 @@ const ContentDetialPage = () => {
             </div>
           </div>
           <div className="flex gap-4">
-            {Ratings.map((rating: any) => (
-              <Rating rating={rating} />
+            {Ratings.map((rating: any, index: number) => (
+              <Rating key={index} rating={rating} />
             ))}
           </div>
         </div>
