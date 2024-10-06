@@ -2,18 +2,13 @@
 
 ## Overview
 
-This repository contains a React application for **Invent Analytics Case**, designed to search for and display movie or series information using the OMDb API. The application allows users to filter content by title, release year, and type (movie or series).
+This repository contains a React application for **Invent Analytics**, designed to search for and display movie or series information using the OMDb API. The application allows users to filter content by title, release year, and type (movie or series).
 
 ## Table of Contents
 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
-- [API](#api)
-- [Folder Structure](#folder-structure)
-- [Running Tests](#running-tests)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
