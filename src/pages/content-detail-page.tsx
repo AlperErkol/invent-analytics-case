@@ -6,6 +6,9 @@ import Badge from "../components/ui/badge";
 import Rating from "../components/rating";
 import ContentDetailMeta from "../components/content-detail-meta";
 import PageTitle from "../components/page-title";
+import Loading from "../components/loading";
+import DataError from "../components/data-error";
+import NoData from "../components/no-data";
 
 const ContentDetialPage = () => {
   const id = useIMDbId();
@@ -16,11 +19,21 @@ const ContentDetialPage = () => {
   });
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {
-    return <p>Error!</p>;
+    return <DataError />;
+  }
+
+  console.log(data);
+
+  if (data.Response === "False") {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <NoData message={data.Error} />
+      </div>
+    );
   }
 
   const {

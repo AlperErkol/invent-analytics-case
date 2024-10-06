@@ -37,3 +37,11 @@ tr:hover {
   background-color: #dddddd;
   cursor: pointer;
 }
+
+.data-status-boundry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0rem;
+  font-weight: 600;
+}

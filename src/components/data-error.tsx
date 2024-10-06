@@ -1,5 +1,9 @@
 const DataError = () => {
-  return <div>An error occured!</div>;
+  return (
+    <div className="data-status-boundry">
+      <p></p>
+    </div>
+  );
 };
 
 export default DataError;

@@ -1,14 +1,20 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import Pagination from "./pagination";
 
 interface IProps {
   columns: string[];
   data: any;
-  isPending: boolean;
-  onRowClick: any;
 }
 
-const DataTable: React.FC<IProps> = ({ columns, data, onRowClick }) => {
+const DataTable: React.FC<IProps> = ({ columns, data }) => {
+  const navigate = useNavigate();
   const contents = data?.Search;
+
+  const onRowClick = (id: string) => {
+    navigate(`/content/${id}`);
+  };
+
   return (
     <div className="content-page-body-wrapper">
       <table className="content-page-body-wrapper-table">
@@ -27,6 +33,7 @@ const DataTable: React.FC<IProps> = ({ columns, data, onRowClick }) => {
             </tr>
           ))}
       </table>
+      {contents && <Pagination rowCount={data?.totalResults} />}
     </div>
   );
 };

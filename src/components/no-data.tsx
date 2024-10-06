@@ -3,7 +3,11 @@ interface IProps {
 }
 
 const NoData: React.FC<IProps> = ({ message }) => {
-  return <div>{message}</div>;
+  return (
+    <div className="data-status-boundry">
+      <p>{message}</p>
+    </div>
+  );
 };
 
 export default NoData;

@@ -10,27 +10,13 @@ jest.mock("./no-data", () => (props: { message: string }) => (
 
 describe("DataStatusBoundry Component", () => {
   it("renders loading state when isPending is true", () => {
-    render(
-      <DataStatusBoundry
-        isPending={true}
-        isError={false}
-        isSuccess={false}
-        data={null}
-      />
-    );
+    render(<DataStatusBoundry isPending={true} isError={false} data={null} />);
     const loadingComponent = screen.getByText("Loading...");
     expect(loadingComponent).toBeInTheDocument();
   });
 
   it("renders error state when isError is true", () => {
-    render(
-      <DataStatusBoundry
-        isPending={false}
-        isError={true}
-        isSuccess={false}
-        data={null}
-      />
-    );
+    render(<DataStatusBoundry isPending={false} isError={true} data={null} />);
     const errorComponent = screen.getByText("Error occurred!");
     expect(errorComponent).toBeInTheDocument();
   });
@@ -38,12 +24,7 @@ describe("DataStatusBoundry Component", () => {
   it("renders no data state when isSuccess is true but no data", () => {
     const mockData = { Error: "No data available" };
     render(
-      <DataStatusBoundry
-        isPending={false}
-        isError={false}
-        isSuccess={true}
-        data={mockData}
-      />
+      <DataStatusBoundry isPending={false} isError={false} data={mockData} />
     );
     expect(screen.getByText("No data: No data available")).toBeInTheDocument();
   });
@@ -53,7 +34,6 @@ describe("DataStatusBoundry Component", () => {
       <DataStatusBoundry
         isPending={false}
         isError={false}
-        isSuccess={true}
         data={{ Result: true }}
       />
     );

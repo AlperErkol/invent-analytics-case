@@ -6,4 +6,6 @@ const searchTypeOptions: Option[] = [
   { label: "Episodes", value: ContentType.Episodes },
 ];
 
-export { searchTypeOptions };
+const tableColumnFields: string[] = ["Name", "Release Date", "Type", "IMDb ID"];
+
+export { searchTypeOptions, tableColumnFields };
