@@ -57,12 +57,12 @@ This repository contains a React application for **Invent Analytics**, designed 
 4. Copy .env.example to .env:
 
    ```bash
-   cp .env.example .env
+   copy .env.example .env
    ```
 
 5. Install the dependencies
    ```bash
-   npm run install
+   npm install
    ```
 
 ### Running the Application
